@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <title>تسجيل الدخول - المغسلة الذكية</title>
+    <style>
+        body { background: #eef2f5; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 90%; max-width: 400px; text-align: center; }
+        h2 { color: #2b5876; margin-bottom: 25px; }
+        input { width: 100%; box-sizing: border-box; padding: 12px; margin-bottom: 15px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 15px; outline: none; }
+        button { width: 100%; padding: 12px; background: #2b5876; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .err { color: #e74c3c; font-size: 14px; margin-bottom: 10px; display: none; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <h2>🔐 الدخول للنظام</h2>
+    <div id="error" class="err"></div>
+    <input type="text" id="username" placeholder="اسم المستخدم" required>
+    <input type="password" id="password" placeholder="كلمة المرور" required>
+    <button onclick="login()">دخول</button>
+</div>
+<script>
+    async function login() {
+        const u = document.getElementById('username').value, p = document.getElementById('password').value;
+        const res = await fetch('/api/login', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: u, password: p}) });
+        const data = await res.json();
+        if(data.success) {
+            localStorage.setItem('user_role', data.user.role);
+            localStorage.setItem('user_name', data.user.username);
+            window.location.href = data.user.role === 'admin' ? '/dashboard.html' : '/index.html';
+        } else {
+            document.getElementById('error').innerText = data.message;
+            document.getElementById('error').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
