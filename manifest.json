@@ -1,9 +1,0 @@
-{
-  "short_name": "نظام المغسلة",
-  "name": "نظام المغسلة الذكي",
-  "start_url": "/login.html",
-  "background_color": "#eef2f5",
-  "theme_color": "#2b5876",
-  "display": "standalone",
-  "orientation": "portrait"
-}
